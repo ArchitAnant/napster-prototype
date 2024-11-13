@@ -1,0 +1,8 @@
+{
+    "server": {
+        "ip": "127.0.0.1",
+        "port": 8080
+    },
+    "buffer_size": 4096,
+    "timeout": 10
+}
