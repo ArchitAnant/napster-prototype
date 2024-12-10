@@ -3,7 +3,9 @@ Server Communication - Handles requests for client registration and peer discove
 """
 
 from typing import Tuple
-from server.server_registry import register_client, get_peer_list
+import socket
+from server_registry import get_peer_list
+# from server.server_registry import register_client, get_peer_list
 
 def handle_registration_request(data: Tuple[str, str]) -> bool:
     """
@@ -32,3 +34,11 @@ def handle_discovery_request(client_id: str) -> list[str]:
     """
     # TODO: Use get_peer_list to get list of other active peers
     pass
+
+def sample_cp_interraction(connection : socket,client_registry,client_id):
+
+    connection.sendall("Welcome client!\nDiscovering Peers".encode())
+    peers = get_peer_list(client_registry,client_id)
+    connection.sendall(f"{peers}".encode())
+    connection.close()
+
