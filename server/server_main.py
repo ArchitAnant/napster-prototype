@@ -43,12 +43,12 @@ class Server:
                     if register_client(self.client_registry, 99, client_address):
                         message = f"Registration Successful\nClient ID: {99}\nYour IP: {client_address[0]}"
                         connection.sendall(message.encode())
-                        thread = threading.Thread(target=sample_cp_interraction(connection,self.client_registry,99),args=(connection,self.client_registry,99))
 
                         # Receive response code from the client
                         res_code = connection.recv(1024).decode()
                         if res_code == '69':
                             print(f"Registered: {self.client_registry[99]}")
+                            thread = threading.Thread(target=sample_cp_interraction(connection,self.client_registry,99),args=(connection,self.client_registry,99))
                             thread.start()
 
                 except Exception as e:
@@ -87,9 +87,14 @@ class Server:
         return get_peer_list(self.client_registry, client_id)
     
     
-
+def get_local_ip():
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+        # Doesn't actually send data; just connects to a known public address
+        s.connect(("8.8.8.8", 80))
+        local_ip = s.getsockname()[0]
+    return local_ip
 
 # Example usage
 if __name__ == "__main__":
-    server = Server(host="192.168.91.84", port=8080)
+    server = Server(host=get_local_ip(), port=8080)
     server.start()
