@@ -61,13 +61,12 @@ def get_peer_list(client_registry: Dict[str, str], client_id: str) -> List[str]:
     raw_lines = result.stdout.decode('UTF-8').split("\n")
     pattern = r"\((.*?)\)"
     ips = []
-
     for line in raw_lines:
         match = re.search(pattern, line)
         if match:
             ip = match.group(1)
             if is_private_ip(ip):
-                if ip not in client_registry.values():
+                if ip != client_registry[client_id][0]:
                     ips.append(ip)
 
     return ips

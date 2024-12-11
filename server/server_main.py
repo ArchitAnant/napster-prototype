@@ -37,13 +37,13 @@ class Server:
                     print("Connection from:", client_address)
 
                     # Start a new thread for client interaction
-                    thread = threading.Thread(target=sample_cp_interraction(connection,self.client_registry,99),args=(connection,self.client_registry,99))
                     
 
                     # Register the client
                     if register_client(self.client_registry, 99, client_address):
                         message = f"Registration Successful\nClient ID: {99}\nYour IP: {client_address[0]}"
                         connection.sendall(message.encode())
+                        thread = threading.Thread(target=sample_cp_interraction(connection,self.client_registry,99),args=(connection,self.client_registry,99))
 
                         # Receive response code from the client
                         res_code = connection.recv(1024).decode()
@@ -53,6 +53,8 @@ class Server:
 
                 except Exception as e:
                     print(f"Error accepting connection: {e}")
+                    connection.sendall("Error connecting to server".encode())
+                    connection.close()
 
         server_socket.close()
         # TODO: Initialize a socket server to listen on the specified port

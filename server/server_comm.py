@@ -40,5 +40,5 @@ def sample_cp_interraction(connection : socket,client_registry,client_id):
     connection.sendall("Welcome client!\nDiscovering Peers".encode())
     peers = get_peer_list(client_registry,client_id)
     connection.sendall(f"{peers}".encode())
-    connection.close()
+    # connection.close()
 
